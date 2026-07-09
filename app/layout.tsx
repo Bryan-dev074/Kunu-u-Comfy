@@ -19,6 +19,13 @@ export const metadata: Metadata = {
     "roupa de dormir",
     "pijamas de luxo",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "Kunu'u Comfy · El arte de descansar",
     description:
