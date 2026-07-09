@@ -24,13 +24,13 @@ export default function Cursor() {
     let rx = mx;
     let ry = my;
     let raf = 0;
-    moon.style.transform = `translate(${mx}px, ${my}px)`;
-    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    moon.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
 
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      moon.style.transform = `translate(${mx}px, ${my}px)`;
+      moon.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
       const target = (e.target as HTMLElement)?.closest?.(
         "a, button, [data-cursor], input, select, textarea, [role='button']"
       ) as HTMLElement | null;
@@ -43,7 +43,7 @@ export default function Cursor() {
     const loop = () => {
       rx += (mx - rx) * 0.16;
       ry += (my - ry) * 0.16;
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
       raf = requestAnimationFrame(loop);
     };
 

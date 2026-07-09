@@ -321,12 +321,11 @@
   will-change: transform;
 }
 .cursor-moon {
-  width: 24px;
-  height: 24px;
-  margin: -12px 0 0 -12px;
+  width: 22px;
+  height: 22px;
   color: var(--color-terracota);
-  filter: drop-shadow(0 2px 7px rgba(192, 103, 74, 0.55));
-  transition: transform 0.35s var(--ease-signature);
+  filter: drop-shadow(0 2px 7px rgba(192, 103, 74, 0.5));
+  transition: width 0.3s var(--ease-signature), height 0.3s var(--ease-signature);
 }
 .cursor-moon svg {
   display: block;
@@ -334,13 +333,13 @@
   height: 100%;
 }
 .cursor-moon.is-active {
-  transform: scale(1.5) rotate(-20deg);
+  width: 27px;
+  height: 27px;
 }
 .cursor-ring {
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
-  border: 1px solid color-mix(in srgb, var(--color-terracota) 45%, transparent);
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in srgb, var(--color-terracota) 42%, transparent);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -348,16 +347,19 @@
     background 0.4s ease, border-color 0.4s ease;
 }
 .cursor-ring.is-active {
-  width: 86px;
-  height: 86px;
-  background: color-mix(in srgb, var(--color-terracota) 12%, transparent);
-  border-color: color-mix(in srgb, var(--color-terracota) 25%, transparent);
+  width: 78px;
+  height: 78px;
+  background: color-mix(in srgb, var(--color-terracota) 11%, transparent);
+  border-color: color-mix(in srgb, var(--color-terracota) 22%, transparent);
 }
 .cursor-label {
+  max-width: 62px;
+  text-align: center;
+  line-height: 1.15;
   font-family: var(--font-body);
-  font-size: 0.5rem;
+  font-size: 0.45rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-arcilla);
   opacity: 0;
