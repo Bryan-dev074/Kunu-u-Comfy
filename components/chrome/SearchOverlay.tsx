@@ -9,7 +9,7 @@ import { useLang } from "@/lib/i18n/context";
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { useMoney } from "@/lib/currency";
 import { pick } from "@/lib/utils";
-import ProductArt from "@/components/art/ProductArt";
+import ProductImage from "@/components/product/ProductImage";
 
 export default function SearchOverlay({
   open,
@@ -112,14 +112,12 @@ export default function SearchOverlay({
                           onClick={onClose}
                           className="flex items-center gap-4 rounded-2xl p-2.5 transition-colors hover:bg-arena/50"
                         >
-                          <span className="h-16 w-14 overflow-hidden rounded-xl bg-arena/50">
-                            <ProductArt
-                              garment={p.garment}
-                              hex={p.colors[0].hex}
-                              shade={p.colors[0].shade}
-                              className="h-full w-full"
-                            />
-                          </span>
+                          <ProductImage
+                            product={p}
+                            color={p.colors[0]}
+                            className="h-16 w-14 rounded-xl"
+                            sizes="56px"
+                          />
                           <span className="flex-1">
                             <span className="block font-display text-lg text-cacao">
                               {pick(p.name, locale)}

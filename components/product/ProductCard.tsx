@@ -9,7 +9,7 @@ import { useLang } from "@/lib/i18n/context";
 import { useCart } from "@/lib/cart-context";
 import { useMoney } from "@/lib/currency";
 import { pick, cn } from "@/lib/utils";
-import ProductArt from "@/components/art/ProductArt";
+import ProductImage from "./ProductImage";
 import Badge from "@/components/ui/Badge";
 
 export default function ProductCard({
@@ -40,20 +40,12 @@ export default function ProductCard({
           aria-label={pick(product.name, locale)}
           className="absolute inset-0 z-[1]"
         >
-          <ProductArt
-            garment={product.garment}
-            hex={color.hex}
-            shade={color.shade}
-            view="front"
-            className="absolute inset-0 h-full w-full transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.05] group-hover:opacity-0"
-          />
-          <ProductArt
-            garment={product.garment}
-            hex={color.hex}
-            shade={color.shade}
-            view="detail"
-            className="absolute inset-0 h-full w-full scale-[1.05] opacity-0 transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-100 group-hover:opacity-100"
-          />
+          <span className="absolute inset-0 transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.05] group-hover:opacity-0">
+            <ProductImage product={product} color={color} view="front" className="h-full w-full" />
+          </span>
+          <span className="absolute inset-0 scale-[1.05] opacity-0 transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-100 group-hover:opacity-100">
+            <ProductImage product={product} color={color} view="detail" className="h-full w-full" />
+          </span>
         </Link>
 
         {/* Badges */}

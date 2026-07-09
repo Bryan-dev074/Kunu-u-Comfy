@@ -10,7 +10,7 @@ import { getProduct } from "@/lib/products";
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { useMoney } from "@/lib/currency";
 import { pick, tpl } from "@/lib/utils";
-import ProductArt from "@/components/art/ProductArt";
+import ProductImage from "@/components/product/ProductImage";
 import Button from "@/components/ui/Button";
 
 const FREE_SHIP = 120;
@@ -121,11 +121,11 @@ export default function CartDrawer() {
                               onClick={close}
                               className="h-28 w-24 shrink-0 overflow-hidden rounded-xl bg-arena/50"
                             >
-                              <ProductArt
-                                garment={p.garment}
-                                hex={color.hex}
-                                shade={color.shade}
+                              <ProductImage
+                                product={p}
+                                color={color}
                                 className="h-full w-full"
+                                sizes="96px"
                               />
                             </Link>
                             <div className="flex flex-1 flex-col">

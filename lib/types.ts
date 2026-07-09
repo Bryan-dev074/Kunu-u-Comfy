@@ -41,4 +41,8 @@ export type Product = {
   featured: boolean;
   order: number;
   related: string[];
+  /** Foto principal (en /public). Si falta, se usa la ilustración SVG. */
+  photo?: string;
+  /** Foto de detalle/tela para el hover-swap y la galería. */
+  photoDetail?: string;
 };

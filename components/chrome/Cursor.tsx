@@ -13,6 +13,7 @@ export default function Cursor() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduced) return;
     setEnabled(true);
+    document.documentElement.classList.add("moon-cursor");
 
     const moon = moonRef.current!;
     const ring = ringRef.current!;
@@ -50,6 +51,7 @@ export default function Cursor() {
     return () => {
       window.removeEventListener("pointermove", onMove);
       cancelAnimationFrame(raf);
+      document.documentElement.classList.remove("moon-cursor");
     };
   }, []);
 

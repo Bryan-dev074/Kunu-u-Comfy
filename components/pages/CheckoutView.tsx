@@ -9,7 +9,7 @@ import { useLang } from "@/lib/i18n/context";
 import { getProduct } from "@/lib/products";
 import { useMoney } from "@/lib/currency";
 import { pick, cn } from "@/lib/utils";
-import ProductArt from "@/components/art/ProductArt";
+import ProductImage from "@/components/product/ProductImage";
 import Button from "@/components/ui/Button";
 import Wordmark from "@/components/chrome/Wordmark";
 
@@ -230,9 +230,9 @@ export default function CheckoutView() {
                   const color = p.colors.find((c) => c.id === it.colorId) ?? p.colors[0];
                   return (
                     <li key={`${it.slug}-${it.colorId}-${it.size}`} className="flex gap-3">
-                      <span className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-arena/50">
-                        <ProductArt garment={p.garment} hex={color.hex} shade={color.shade} className="h-full w-full" />
-                        <span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-cacao text-[0.6rem] font-bold text-lino">
+                      <span className="relative h-20 w-16 shrink-0">
+                        <ProductImage product={p} color={color} className="h-full w-full rounded-lg" sizes="64px" />
+                        <span className="absolute -right-1.5 -top-1.5 z-10 grid h-5 w-5 place-items-center rounded-full bg-cacao text-[0.6rem] font-bold text-lino">
                           {it.qty}
                         </span>
                       </span>

@@ -368,6 +368,11 @@
   opacity: 1;
   transform: scale(1);
 }
+/* Oculta el cursor nativo cuando la luna está activa */
+html.moon-cursor,
+html.moon-cursor * {
+  cursor: none !important;
+}
 @media (pointer: coarse) {
   .cursor-moon,
   .cursor-ring {
