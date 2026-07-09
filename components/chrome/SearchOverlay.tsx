@@ -7,7 +7,8 @@ import { Search, X } from "lucide-react";
 import { products } from "@/lib/products";
 import { useLang } from "@/lib/i18n/context";
 import { useScrollLock } from "@/lib/use-scroll-lock";
-import { formatPrice, pick } from "@/lib/utils";
+import { useMoney } from "@/lib/currency";
+import { pick } from "@/lib/utils";
 import ProductArt from "@/components/art/ProductArt";
 
 export default function SearchOverlay({
@@ -18,6 +19,7 @@ export default function SearchOverlay({
   onClose: () => void;
 }) {
   const { locale, t } = useLang();
+  const { format } = useMoney();
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   useScrollLock(open);
@@ -127,7 +129,7 @@ export default function SearchOverlay({
                             </span>
                           </span>
                           <span className="tabular text-sm font-semibold text-arcilla">
-                            {formatPrice(p.price, locale)}
+                            {format(p.price)}
                           </span>
                         </Link>
                       </li>

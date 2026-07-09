@@ -8,7 +8,8 @@ import { getProduct, getRelated } from "@/lib/products";
 import type { Product } from "@/lib/types";
 import { useLang } from "@/lib/i18n/context";
 import { useCart } from "@/lib/cart-context";
-import { cn, formatPrice, pick } from "@/lib/utils";
+import { useMoney } from "@/lib/currency";
+import { cn, pick } from "@/lib/utils";
 import Gallery from "@/components/product/Gallery";
 import Swatches from "@/components/product/Swatches";
 import SizeSelector from "@/components/product/SizeSelector";
@@ -33,6 +34,7 @@ export default function ProductView({ slug }: { slug: string }) {
   const product = getProduct(slug)!;
   const { locale, t } = useLang();
   const { add } = useCart();
+  const { format, formatIn } = useMoney();
 
   const [colorId, setColorId] = useState(product.colors[0].id);
   const [size, setSize] = useState<string | null>(null);
@@ -87,13 +89,17 @@ export default function ProductView({ slug }: { slug: string }) {
             <div className="mt-5 flex items-baseline gap-3">
               {product.compareAt && (
                 <span className="tabular text-lg text-taupe line-through">
-                  {formatPrice(product.compareAt, locale)}
+                  {format(product.compareAt)}
                 </span>
               )}
               <span className="tabular font-display text-3xl text-cacao">
-                {formatPrice(product.price, locale)}
+                {format(product.price)}
               </span>
             </div>
+            <p className="tabular mt-1.5 text-sm text-taupe">
+              {formatIn(product.price, "USD")} · {formatIn(product.price, "PYG")} ·{" "}
+              {formatIn(product.price, "BRL")}
+            </p>
 
             <div className="mt-8 space-y-7">
               <Swatches colors={product.colors} value={colorId} onChange={setColorId} />
@@ -180,7 +186,7 @@ export default function ProductView({ slug }: { slug: string }) {
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--line)] bg-lino/90 px-4 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] pt-3 backdrop-blur-xl lg:hidden">
         <div className="flex items-center gap-3">
           <span className="tabular font-display text-xl text-cacao">
-            {formatPrice(product.price, locale)}
+            {format(product.price)}
           </span>
           <button
             onClick={handleAdd}

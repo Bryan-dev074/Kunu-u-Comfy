@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Facebook, Mail } from "lucide-react";
 import { useT } from "@/lib/i18n/context";
-import NewsletterForm from "@/components/ui/NewsletterForm";
+import { whatsappLink } from "@/lib/whatsapp";
+import {
+  InstagramIcon,
+  FacebookIcon,
+  TiktokIcon,
+  WhatsappIcon,
+} from "@/components/icons/BrandIcons";
 import Wordmark from "./Wordmark";
 import LanguageToggle from "./LanguageToggle";
 
@@ -35,29 +40,37 @@ export default function Footer() {
     },
   ];
 
+  const socials = [
+    { Icon: InstagramIcon, label: "Instagram" },
+    { Icon: FacebookIcon, label: "Facebook" },
+    { Icon: TiktokIcon, label: "TikTok" },
+  ];
+
   return (
     <footer className="relative mt-24 bg-nocturno text-lino/80">
       <div className="u-container grid gap-12 py-20 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        {/* Marca + newsletter */}
+        {/* Marca + WhatsApp */}
         <div>
           <Wordmark className="text-2xl text-lino" showComfy />
           <p className="mt-5 max-w-xs text-lino/60">{t.footer.tagline}</p>
           <p className="mt-8 mb-3 text-xs uppercase tracking-[0.2em] text-lino/50">
             {t.footer.newsletterTitle}
           </p>
-          <NewsletterForm
-            variant="dark"
-            placeholder={t.footer.newsletterPlaceholder}
-            button={t.footer.newsletterButton}
-            success={t.home.newsletter.success}
-            className="max-w-sm"
-          />
+          <a
+            href={whatsappLink(t.whatsapp.message)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-terracota px-6 py-3 text-sm font-semibold text-lino transition-transform duration-300 hover:scale-[1.03] active:scale-95"
+          >
+            <WhatsappIcon size={18} />
+            {t.whatsapp.button}
+          </a>
           <div className="mt-7 flex gap-3">
-            {[Instagram, Facebook, Mail].map((Icon, i) => (
+            {socials.map(({ Icon, label }) => (
               <a
-                key={i}
+                key={label}
                 href="#"
-                aria-label="Social"
+                aria-label={label}
                 className="grid h-10 w-10 place-items-center rounded-full border border-lino/15 text-lino/70 transition-colors hover:border-terracota hover:bg-terracota hover:text-lino"
               >
                 <Icon size={17} />

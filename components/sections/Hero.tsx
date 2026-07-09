@@ -54,9 +54,9 @@ export default function Hero() {
 
           <h1 className="mt-5 font-display text-[clamp(3rem,9vw,6.6rem)] leading-[0.98] tracking-tight text-cacao">
             {t.home.hero.titleLines.map((line, i) => (
-              <span key={i} className="block overflow-hidden pb-[0.05em]">
+              <span key={i} className="block overflow-hidden pb-[0.18em] -mb-[0.14em]">
                 <motion.span
-                  className="block"
+                  className="block pb-[0.02em]"
                   initial={reduced ? false : { y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.95, ease: EASE, delay: 0.15 + i * 0.12 }}

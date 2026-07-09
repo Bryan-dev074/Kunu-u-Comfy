@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Cursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
+  const moonRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const [enabled, setEnabled] = useState(false);
@@ -14,7 +14,7 @@ export default function Cursor() {
     if (!fine || reduced) return;
     setEnabled(true);
 
-    const dot = dotRef.current!;
+    const moon = moonRef.current!;
     const ring = ringRef.current!;
     const label = labelRef.current!;
 
@@ -27,12 +27,13 @@ export default function Cursor() {
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
+      moon.style.transform = `translate(${mx}px, ${my}px)`;
       const target = (e.target as HTMLElement)?.closest?.(
         "a, button, [data-cursor], input, select, textarea, [role='button']"
       ) as HTMLElement | null;
       const active = Boolean(target);
       ring.classList.toggle("is-active", active);
+      moon.classList.toggle("is-active", active);
       label.textContent = target?.dataset?.cursor ?? "";
     };
 
@@ -56,7 +57,13 @@ export default function Cursor() {
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+      {/* Luna que sigue el puntero */}
+      <div ref={moonRef} className="cursor-moon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.6 15.3A8.4 8.4 0 0 1 8.9 3.7a8.4 8.4 0 1 0 11.7 11.6Z" />
+        </svg>
+      </div>
+      {/* Anillo con retardo */}
       <div ref={ringRef} className="cursor-ring" aria-hidden="true">
         <span ref={labelRef} className="cursor-label" />
       </div>

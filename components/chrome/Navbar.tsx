@@ -116,7 +116,9 @@ export default function Navbar() {
 
             {/* Derecha: acciones */}
             <div className="flex flex-1 items-center justify-end gap-1 sm:gap-2">
-              <LanguageToggle className="hidden sm:inline-flex" />
+              <div className="hidden sm:block">
+                <LanguageToggle />
+              </div>
               <button
                 onClick={() => setSearchOpen(true)}
                 aria-label={t.nav.search}

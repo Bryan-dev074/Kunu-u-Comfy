@@ -22,8 +22,10 @@ export default function ProductArt({
 }: Props) {
   const id = `${garment}-${hex.replace("#", "")}-${view}`;
   const gBg = `bg-${id}`;
+  const gBack = `back-${id}`;
   const gGlow = `glow-${id}`;
   const gCloth = `cloth-${id}`;
+  const gVig = `vig-${id}`;
 
   return (
     <svg
@@ -46,24 +48,37 @@ export default function ProductArt({
           <stop offset="0%" stopColor={hex} />
           <stop offset="100%" stopColor={shade} />
         </linearGradient>
+        <radialGradient id={gBack} cx="0.5" cy="0.4" r="0.78">
+          <stop offset="0%" stopColor="#FFFDF8" />
+          <stop offset="62%" stopColor={hex} stopOpacity="0.14" />
+          <stop offset="100%" stopColor={shade} stopOpacity="0.3" />
+        </radialGradient>
+        <radialGradient id={gVig} cx="0.5" cy="0.42" r="0.72">
+          <stop offset="60%" stopColor={shade} stopOpacity="0" />
+          <stop offset="100%" stopColor={shade} stopOpacity="0.22" />
+        </radialGradient>
       </defs>
 
-      {/* Fondo cálido */}
-      <rect width="400" height="500" fill={`url(#${gBg})`} />
+      {/* Fondo tipo estudio */}
+      <rect width="400" height="500" fill={`url(#${gBack})`} />
       <rect width="400" height="500" fill={`url(#${gGlow})`} />
 
       {/* Motivo luna / amanecer */}
-      <circle cx="312" cy="96" r="42" fill="#FFFFFF" opacity="0.28" />
-      <circle cx="326" cy="90" r="42" fill={`url(#${gBg})`} opacity="0.9" />
+      <circle cx="312" cy="94" r="40" fill="#FFFFFF" opacity="0.3" />
+      <circle cx="325" cy="88" r="40" fill={`url(#${gBack})`} opacity="0.92" />
 
-      {/* Sombra de apoyo */}
-      <ellipse cx="200" cy="452" rx="120" ry="16" fill={shade} opacity="0.12" />
+      {/* Sombra de apoyo suave */}
+      <ellipse cx="200" cy="452" rx="132" ry="20" fill={shade} opacity="0.2" />
+      <ellipse cx="200" cy="450" rx="90" ry="10" fill={shade} opacity="0.16" />
 
       {view === "detail" ? (
         <FabricDetail hex={hex} shade={shade} cloth={gCloth} />
       ) : (
         <GarmentFront garment={garment} hex={hex} shade={shade} cloth={gCloth} />
       )}
+
+      {/* Viñeta de encuadre */}
+      <rect width="400" height="500" fill={`url(#${gVig})`} />
     </svg>
   );
 }

@@ -130,19 +130,19 @@ export const es = {
           quote:
             "Es el primer pijama que mi hija no se quiere sacar. La tela es una nube.",
           author: "Valentina R.",
-          role: "Mamá de Olivia, 4 años",
+          role: "Asunción, Paraguay",
         },
         {
           quote:
-            "Compré el conjunto para mí y terminé pidiendo el juego para toda la familia. Impecable.",
-          author: "Mariano T.",
-          role: "Buenos Aires",
+            "Comprei o conjunto pra mim e acabei pedindo o kit pra família toda. Impecável.",
+          author: "Mariana S.",
+          role: "São Paulo, Brasil",
         },
         {
           quote:
-            "El detalle del empaque y la nota escrita a mano me conquistaron antes de abrirlo.",
+            "El empaque y la notita escrita a mano me conquistaron antes de abrir la caja.",
           author: "Carla M.",
-          role: "Clienta desde 2024",
+          role: "Ciudad del Este, Paraguay",
         },
       ],
     },
@@ -155,6 +155,15 @@ export const es = {
       success: "¡Bienvenida al círculo! Revisá tu correo.",
       disclaimer: "Cero spam. Podés salir cuando quieras.",
     },
+  },
+
+  whatsapp: {
+    eyebrow: "Atención personal",
+    title: "¿Lo hablamos por WhatsApp?",
+    body: "Contanos qué buscás y te ayudamos a elegir talla, color y el regalo perfecto. Respondemos con nombre y apellido, sin apuros.",
+    button: "Escribir por WhatsApp",
+    floatLabel: "Escribinos",
+    message: "Hola 🌙 Me interesa Kunu'u Comfy. ¿Me ayudan?",
   },
 
   collection: {
@@ -378,7 +387,7 @@ export const es = {
     channels: {
       title: "Otras vías",
       whatsapp: "WhatsApp",
-      whatsappValue: "+54 9 11 5555 5555",
+      whatsappValue: "+595 971 123 456",
       email: "Correo",
       emailValue: "hola@kunuucomfy.com",
       hours: "Horario",

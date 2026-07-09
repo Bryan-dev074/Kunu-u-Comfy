@@ -8,7 +8,8 @@ import { useCart } from "@/lib/cart-context";
 import { useLang } from "@/lib/i18n/context";
 import { getProduct } from "@/lib/products";
 import { useScrollLock } from "@/lib/use-scroll-lock";
-import { formatPrice, pick, tpl } from "@/lib/utils";
+import { useMoney } from "@/lib/currency";
+import { pick, tpl } from "@/lib/utils";
 import ProductArt from "@/components/art/ProductArt";
 import Button from "@/components/ui/Button";
 
@@ -17,6 +18,7 @@ const FREE_SHIP = 120;
 export default function CartDrawer() {
   const { items, isOpen, close, setQty, remove, subtotal, count } = useCart();
   const { locale, t } = useLang();
+  const { format } = useMoney();
   useScrollLock(isOpen);
 
   useEffect(() => {
@@ -82,7 +84,7 @@ export default function CartDrawer() {
                   <p className="mb-2 text-center text-sm text-cacao">
                     {remaining > 0
                       ? tpl(t.cart.freeShippingProgress, {
-                          amount: formatPrice(remaining, locale),
+                          amount: format(remaining),
                         })
                       : t.cart.freeShippingReached}
                   </p>
@@ -171,7 +173,7 @@ export default function CartDrawer() {
                                   </button>
                                 </div>
                                 <span className="tabular font-semibold text-cacao">
-                                  {formatPrice(p.price * item.qty, locale)}
+                                  {format(p.price * item.qty)}
                                 </span>
                               </div>
                             </div>
@@ -187,7 +189,7 @@ export default function CartDrawer() {
                   <div className="mb-4 flex items-center justify-between">
                     <span className="text-taupe">{t.cart.subtotal}</span>
                     <span className="tabular font-display text-2xl text-cacao">
-                      {formatPrice(subtotal, locale)}
+                      {format(subtotal)}
                     </span>
                   </div>
                   <Button href="/checkout" onClick={close} variant="primary" size="lg" className="w-full">

@@ -45,7 +45,7 @@
   --line-strong: color-mix(in srgb, var(--color-cacao) 20%, transparent);
   --pad-x: clamp(1.25rem, 6vw, 6rem);
   --nav-h: 68px;
-  --header-h: 104px;
+  --header-h: 108px;
   color-scheme: light;
 }
 
@@ -270,6 +270,34 @@
   to { background-position: 180% 0; }
 }
 
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes cloud-drift {
+  0%, 100% { transform: translateX(-6%); }
+  50% { transform: translateX(6%); }
+}
+
+@keyframes z-rise {
+  0% { opacity: 0; transform: translateY(10px) scale(0.7); }
+  25% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.25); }
+}
+
+.ritual-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle 3s ease-in-out infinite;
+}
+.ritual-z {
+  position: absolute;
+  font-family: var(--font-display);
+  animation: z-rise 4s ease-in-out infinite;
+}
+
 /* --------------------------- Grano fílmico ------------------------------- */
 .grain {
   position: fixed;
@@ -282,8 +310,8 @@
   animation: grain-shift 1.2s steps(3) infinite;
 }
 
-/* --------------------------- Cursor custom ------------------------------- */
-.cursor-dot,
+/* --------------------------- Cursor temático (luna) ---------------------- */
+.cursor-moon,
 .cursor-ring {
   position: fixed;
   top: 0;
@@ -292,29 +320,38 @@
   pointer-events: none;
   will-change: transform;
 }
-.cursor-dot {
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
-  border-radius: 50%;
-  background: var(--color-terracota);
+.cursor-moon {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  color: var(--color-terracota);
+  filter: drop-shadow(0 2px 6px rgba(192, 103, 74, 0.4));
+  transition: transform 0.35s var(--ease-signature);
+}
+.cursor-moon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cursor-moon.is-active {
+  transform: scale(1.5) rotate(-20deg);
 }
 .cursor-ring {
-  width: 42px;
-  height: 42px;
-  margin: -21px 0 0 -21px;
-  border: 1px solid color-mix(in srgb, var(--color-terracota) 70%, transparent);
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border: 1px solid color-mix(in srgb, var(--color-terracota) 45%, transparent);
   border-radius: 50%;
   display: grid;
   place-items: center;
-  transition: width 0.4s var(--ease-signature), height 0.4s var(--ease-signature),
+  transition: width 0.45s var(--ease-signature), height 0.45s var(--ease-signature),
     background 0.4s ease, border-color 0.4s ease;
 }
 .cursor-ring.is-active {
-  width: 74px;
-  height: 74px;
-  background: color-mix(in srgb, var(--color-terracota) 14%, transparent);
-  border-color: transparent;
+  width: 86px;
+  height: 86px;
+  background: color-mix(in srgb, var(--color-terracota) 12%, transparent);
+  border-color: color-mix(in srgb, var(--color-terracota) 25%, transparent);
 }
 .cursor-label {
   font-family: var(--font-body);
@@ -324,56 +361,76 @@
   text-transform: uppercase;
   color: var(--color-arcilla);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transform: scale(0.6);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-signature);
 }
 .cursor-ring.is-active .cursor-label {
   opacity: 1;
+  transform: scale(1);
 }
 @media (pointer: coarse) {
-  .cursor-dot,
+  .cursor-moon,
   .cursor-ring {
     display: none;
   }
 }
 
-/* --------------------------- Fondo amanecer ------------------------------ */
+/* --------------------------- Fondo aurora cálida ------------------------- */
 .dawn-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  background: linear-gradient(168deg, var(--color-lino), var(--color-algodon));
+  background: linear-gradient(165deg, var(--color-lino), var(--color-algodon) 55%, var(--color-arena));
 }
-.dawn-glow {
+.dawn-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(80px);
+  opacity: 0.55;
+  will-change: transform;
 }
-.dawn-glow--a {
-  width: 60vw;
-  height: 60vw;
-  top: -22vw;
-  right: -14vw;
-  background: radial-gradient(circle, var(--accent-glow), transparent 66%);
-  animation: breathe 12s ease-in-out infinite;
+.dawn-orb--1 {
+  width: 54vw;
+  height: 54vw;
+  top: -16vw;
+  right: -8vw;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-terracota) 40%, transparent), transparent 62%);
+  animation: drift-1 26s ease-in-out infinite;
 }
-.dawn-glow--b {
-  width: 52vw;
-  height: 52vw;
-  bottom: -20vw;
-  left: -16vw;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-terracota-luz) 24%, transparent),
-    transparent 66%
-  );
-  animation: breathe 14s ease-in-out infinite reverse;
+.dawn-orb--2 {
+  width: 48vw;
+  height: 48vw;
+  bottom: -18vw;
+  left: -12vw;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-terracota-luz) 42%, transparent), transparent 64%);
+  animation: drift-2 32s ease-in-out infinite;
+}
+.dawn-orb--3 {
+  width: 40vw;
+  height: 40vw;
+  top: 34%;
+  left: 42%;
+  background: radial-gradient(circle, color-mix(in srgb, #e4b4a2 40%, transparent), transparent 66%);
+  animation: drift-3 38s ease-in-out infinite;
+}
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6vw, 5vw) scale(1.14); }
+}
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, -5vw) scale(1.12); }
+}
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  50% { transform: translate(-5vw, -3vw) scale(1.2); opacity: 0.55; }
 }
 .dawn-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(130% 100% at 50% 40%, transparent 58%, rgba(36, 26, 19, 0.06));
+  background: radial-gradient(135% 100% at 50% 40%, transparent 55%, rgba(36, 26, 19, 0.1));
 }
 
 /* --------------------------- Skeleton ------------------------------------ */
@@ -416,15 +473,14 @@
     scroll-behavior: auto !important;
   }
   .grain,
-  .dawn-glow--a,
-  .dawn-glow--b {
+  .dawn-orb {
     animation: none !important;
   }
   .reveal-init {
     opacity: 1 !important;
     transform: none !important;
   }
-  .cursor-dot,
+  .cursor-moon,
   .cursor-ring {
     display: none !important;
   }

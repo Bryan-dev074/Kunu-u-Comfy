@@ -7,7 +7,8 @@ import { Lock, ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useLang } from "@/lib/i18n/context";
 import { getProduct } from "@/lib/products";
-import { formatPrice, pick, cn } from "@/lib/utils";
+import { useMoney } from "@/lib/currency";
+import { pick, cn } from "@/lib/utils";
 import ProductArt from "@/components/art/ProductArt";
 import Button from "@/components/ui/Button";
 import Wordmark from "@/components/chrome/Wordmark";
@@ -17,6 +18,7 @@ const FREE_SHIP = 120;
 export default function CheckoutView() {
   const { items, subtotal, clear } = useCart();
   const { locale, t } = useLang();
+  const { format } = useMoney();
 
   const [card, setCard] = useState("");
   const [name, setName] = useState("");
@@ -242,7 +244,7 @@ export default function CheckoutView() {
                           {pick(color.name, locale)} · {it.size}
                         </span>
                         <span className="tabular mt-auto text-sm font-semibold text-cacao">
-                          {formatPrice(p.price * it.qty, locale)}
+                          {format(p.price * it.qty)}
                         </span>
                       </div>
                     </li>
@@ -251,15 +253,15 @@ export default function CheckoutView() {
               </ul>
 
               <div className="mt-6 space-y-2 border-t border-[var(--line)] pt-5 text-sm">
-                <Row label={t.checkout.summary.subtotal} value={formatPrice(subtotal, locale)} />
+                <Row label={t.checkout.summary.subtotal} value={format(subtotal)} />
                 <Row
                   label={t.checkout.summary.shipping}
-                  value={shipping === 0 ? t.checkout.summary.free : formatPrice(shipping, locale)}
+                  value={shipping === 0 ? t.checkout.summary.free : format(shipping)}
                 />
                 <div className="flex items-center justify-between border-t border-[var(--line)] pt-3 text-base">
                   <span className="font-medium text-cacao">{t.checkout.summary.total}</span>
                   <span className="tabular font-display text-2xl text-cacao">
-                    {formatPrice(total, locale)}
+                    {format(total)}
                   </span>
                 </div>
               </div>

@@ -7,7 +7,8 @@ import { Plus } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { useLang } from "@/lib/i18n/context";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice, pick, cn } from "@/lib/utils";
+import { useMoney } from "@/lib/currency";
+import { pick, cn } from "@/lib/utils";
 import ProductArt from "@/components/art/ProductArt";
 import Badge from "@/components/ui/Badge";
 
@@ -20,6 +21,7 @@ export default function ProductCard({
 }) {
   const { locale, t } = useLang();
   const { add } = useCart();
+  const { format } = useMoney();
   const [ci, setCi] = useState(0);
   const [quickOpen, setQuickOpen] = useState(false);
   const color = product.colors[ci];
@@ -63,8 +65,8 @@ export default function ProductCard({
           </div>
         )}
 
-        {/* Quick add */}
-        <div className="absolute inset-x-3 bottom-3 z-[3]">
+        {/* Quick add (solo desktop) */}
+        <div className="absolute inset-x-3 bottom-3 z-[3] hidden lg:block">
           <AnimatePresence mode="wait">
             {quickOpen ? (
               <motion.div
@@ -93,7 +95,7 @@ export default function ProductCard({
                 exit={{ opacity: 0, y: 10 }}
                 onClick={() => setQuickOpen(true)}
                 data-cursor={t.common.quickAdd}
-                className="glass flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-cacao opacity-0 transition-opacity duration-300 group-hover:opacity-100 max-lg:opacity-100"
+                className="glass flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-cacao opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               >
                 <Plus size={15} /> {t.common.quickAdd}
               </motion.button>
@@ -113,11 +115,11 @@ export default function ProductCard({
         <div className="shrink-0 text-right">
           {product.compareAt && (
             <span className="tabular mr-1 text-xs text-taupe line-through">
-              {formatPrice(product.compareAt, locale)}
+              {format(product.compareAt)}
             </span>
           )}
           <span className="tabular font-semibold text-cacao">
-            {formatPrice(product.price, locale)}
+            {format(product.price)}
           </span>
         </div>
       </div>
