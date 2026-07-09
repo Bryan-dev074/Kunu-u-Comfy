@@ -1,18 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import type { Garment } from "@/lib/types";
 import { useLang } from "@/lib/i18n/context";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
-import ProductArt from "@/components/art/ProductArt";
 
-type Tile = { key: "adults" | "kids" | "family"; href: string; garment: Garment; hex: string; shade: string };
+type Tile = { key: "adults" | "kids" | "family"; href: string; photo: string };
 
 const TILES: Tile[] = [
-  { key: "adults", href: "/coleccion?cat=adults", garment: "robe", hex: "#C0674A", shade: "#97482F" },
-  { key: "kids", href: "/coleccion?cat=kids", garment: "kids-set", hex: "#E4B4A2", shade: "#C68974" },
-  { key: "family", href: "/coleccion?cat=family", garment: "family-set", hex: "#A6B199", shade: "#7C886C" },
+  { key: "adults", href: "/coleccion?cat=adults", photo: "/products/robe.jpg" },
+  { key: "kids", href: "/coleccion?cat=kids", photo: "/products/kids-set.jpg" },
+  { key: "family", href: "/coleccion?cat=family", photo: "/products/family.jpg" },
 ];
 
 export default function CategoryTiles() {
@@ -35,16 +34,17 @@ export default function CategoryTiles() {
               className="group relative block aspect-[3/4] overflow-hidden rounded-3xl bg-arena/40"
               data-cursor={t.common.discover}
             >
-              <ProductArt
-                garment={tile.garment}
-                hex={tile.hex}
-                shade={tile.shade}
-                className="absolute inset-0 h-full w-full transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06]"
+              <Image
+                src={tile.photo}
+                alt={cats[tile.key].title}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-nocturno/65 via-nocturno/5 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-nocturno/75 via-nocturno/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6 text-lino md:p-7">
                 <h3 className="font-display text-3xl md:text-4xl">{cats[tile.key].title}</h3>
-                <p className="mt-1.5 max-w-[26ch] text-sm text-lino/80">{cats[tile.key].desc}</p>
+                <p className="mt-1.5 max-w-[26ch] text-sm text-lino/85">{cats[tile.key].desc}</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em]">
                   {t.common.shopNow}
                   <ArrowUpRight

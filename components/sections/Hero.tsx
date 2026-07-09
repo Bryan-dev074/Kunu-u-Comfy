@@ -3,9 +3,9 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
+import Image from "next/image";
 import { useLang } from "@/lib/i18n/context";
 import Button from "@/components/ui/Button";
-import ProductArt from "@/components/art/ProductArt";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -91,24 +91,24 @@ export default function Hero() {
             style={{ y: y1 }}
             className="absolute right-[6%] top-0 w-[58%] animate-float"
           >
-            <div className="overflow-hidden rounded-[26px] bg-arena/40 shadow-[0_50px_100px_-40px_rgba(36,26,19,0.4)]">
-              <ProductArt garment="robe" hex="#C0674A" shade="#97482F" className="aspect-[4/5] w-full" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[26px] bg-arena/40 shadow-[0_50px_100px_-40px_rgba(36,26,19,0.4)]">
+              <Image src="/products/robe.jpg" alt="" fill sizes="34vw" className="object-cover" priority />
             </div>
           </motion.div>
           <motion.div
             style={{ y: y2 }}
             className="absolute bottom-[4%] left-[2%] w-[46%]"
           >
-            <div className="overflow-hidden rounded-[22px] bg-arena/40 shadow-[0_40px_90px_-40px_rgba(36,26,19,0.35)]">
-              <ProductArt garment="family-set" hex="#8492A8" shade="#5C6A80" className="aspect-[4/5] w-full" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-arena/40 shadow-[0_40px_90px_-40px_rgba(36,26,19,0.35)]">
+              <Image src="/products/family.jpg" alt="" fill sizes="27vw" className="object-cover" />
             </div>
           </motion.div>
           <motion.div
             style={{ y: y3 }}
             className="absolute bottom-[26%] right-[0%] w-[30%]"
           >
-            <div className="overflow-hidden rounded-[18px] bg-arena/40 shadow-[0_30px_70px_-30px_rgba(36,26,19,0.3)]">
-              <ProductArt garment="kids-onesie" hex="#E4B4A2" shade="#C68974" className="aspect-[4/5] w-full" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[18px] bg-arena/40 shadow-[0_30px_70px_-30px_rgba(36,26,19,0.3)]">
+              <Image src="/products/kids-set2.jpg" alt="" fill sizes="18vw" className="object-cover" />
             </div>
           </motion.div>
         </div>
