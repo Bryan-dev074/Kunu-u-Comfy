@@ -348,23 +348,23 @@ export const products: Product[] = [
   },
 ];
 
-/* Fotos (en /public/products) — editables o reemplazables por fotos propias */
+/* Fotos por producto (Unsplash, en /public/products). Reemplazables por fotos propias. */
 const PHOTOS: Record<string, [string, string]> = {
-  "bata-abrazo": ["/products/robe.jpg", "/products/detail.jpg"],
-  "conjunto-amanecer": ["/products/set-long.jpg", "/products/detail2.jpg"],
-  "camison-luna": ["/products/gown.jpg", "/products/detail.jpg"],
-  "conjunto-sereno": ["/products/set-short.jpg", "/products/stack.jpg"],
-  "bata-seda-noche": ["/products/robe2.jpg", "/products/detail2.jpg"],
-  "pijama-clasico": ["/products/set-long.jpg", "/products/detail.jpg"],
-  "camison-brisa": ["/products/gown2.jpg", "/products/detail.jpg"],
-  "pijama-nube": ["/products/kids-set.jpg", "/products/detail2.jpg"],
-  "enterito-estrella": ["/products/kids-set2.jpg", "/products/detail.jpg"],
-  "pijama-cometa": ["/products/kids-set.jpg", "/products/stack.jpg"],
-  "camison-lunita": ["/products/gown2.jpg", "/products/detail2.jpg"],
-  "enterito-cielo": ["/products/kids-set2.jpg", "/products/detail2.jpg"],
-  "set-familia-amanecer": ["/products/family.jpg", "/products/stack.jpg"],
-  "set-noche-estrellada": ["/products/family.jpg", "/products/detail.jpg"],
-  "set-familia-nube": ["/products/family.jpg", "/products/detail2.jpg"],
+  "bata-abrazo": ["/products/bata-abrazo.jpg", "/products/tex-linen.jpg"],
+  "conjunto-amanecer": ["/products/conjunto-amanecer.jpg", "/products/tex-cream.jpg"],
+  "camison-luna": ["/products/camison-luna.jpg", "/products/tex-cream.jpg"],
+  "conjunto-sereno": ["/products/conjunto-sereno.jpg", "/products/tex-sage.jpg"],
+  "bata-seda-noche": ["/products/bata-seda-noche.jpg", "/products/tex-linen.jpg"],
+  "pijama-clasico": ["/products/pijama-clasico.jpg", "/products/tex-fold.jpg"],
+  "camison-brisa": ["/products/camison-brisa.jpg", "/products/tex-linen.jpg"],
+  "pijama-nube": ["/products/pijama-nube.jpg", "/products/tex-fold.jpg"],
+  "enterito-estrella": ["/products/enterito-estrella.jpg", "/products/tex-sage.jpg"],
+  "pijama-cometa": ["/products/pijama-cometa.jpg", "/products/tex-stack.jpg"],
+  "camison-lunita": ["/products/camison-lunita.jpg", "/products/tex-cream.jpg"],
+  "enterito-cielo": ["/products/enterito-cielo.jpg", "/products/tex-sage.jpg"],
+  "set-familia-amanecer": ["/products/set-familia-amanecer.jpg", "/products/tex-stack.jpg"],
+  "set-noche-estrellada": ["/products/set-noche-estrellada.jpg", "/products/tex-linen.jpg"],
+  "set-familia-nube": ["/products/set-familia-nube.jpg", "/products/tex-stack.jpg"],
 };
 for (const p of products) {
   const ph = PHOTOS[p.slug];
