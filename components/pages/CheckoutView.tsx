@@ -1,42 +1,122 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { Lock, ShoppingBag, Check, Info } from "lucide-react";
+import { Lock, ShoppingBag, Check, Wand2 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useLang } from "@/lib/i18n/context";
-import { getProduct } from "@/lib/products";
 import { useMoney } from "@/lib/currency";
+import { getProduct } from "@/lib/products";
+import { whatsappLink } from "@/lib/whatsapp";
 import { pick, cn } from "@/lib/utils";
 import ProductImage from "@/components/product/ProductImage";
 import Button from "@/components/ui/Button";
 import Wordmark from "@/components/chrome/Wordmark";
+import { WhatsappIcon } from "@/components/icons/BrandIcons";
 
 const FREE_SHIP = 120;
+
+type Form = {
+  email: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  card: string;
+  cardName: string;
+  exp: string;
+  cvc: string;
+};
 
 export default function CheckoutView() {
   const { items, subtotal, clear } = useCart();
   const { locale, t } = useLang();
   const { format } = useMoney();
 
-  const [card, setCard] = useState("");
-  const [name, setName] = useState("");
-  const [exp, setExp] = useState("");
-  const [cvc, setCvc] = useState("");
+  const [form, setForm] = useState<Form>({
+    email: "",
+    phone: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: locale === "pt" ? "Brasil" : "Paraguay",
+    card: "",
+    cardName: "",
+    exp: "",
+    cvc: "",
+  });
   const [processing, setProcessing] = useState(false);
   const [order, setOrder] = useState<string | null>(null);
 
   const shipping = subtotal >= FREE_SHIP || subtotal === 0 ? 0 : 8;
   const total = subtotal + shipping;
 
-  function fmtCard(v: string) {
-    return v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
-  }
-  function fmtExp(v: string) {
+  const on =
+    (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const fmtCard = (v: string) =>
+    v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+  const fmtExp = (v: string) => {
     const d = v.replace(/\D/g, "").slice(0, 4);
     return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+  };
+
+  function fillExample() {
+    setForm(
+      locale === "pt"
+        ? {
+            email: "ana.souza@email.com",
+            phone: "+55 11 98765-4321",
+            firstName: "Ana",
+            lastName: "Souza",
+            address: "Rua Augusta, 1234",
+            city: "São Paulo",
+            state: "SP",
+            zip: "01305-000",
+            country: "Brasil",
+            card: "4242 4242 4242 4242",
+            cardName: "ANA SOUZA",
+            exp: "08/28",
+            cvc: "123",
+          }
+        : {
+            email: "ana.gonzalez@email.com",
+            phone: "+595 971 234 567",
+            firstName: "Ana",
+            lastName: "González",
+            address: "Av. Mariscal López 1234",
+            city: "Asunción",
+            state: "Central",
+            zip: "001209",
+            country: "Paraguay",
+            card: "4242 4242 4242 4242",
+            cardName: "ANA GONZALEZ",
+            exp: "08/28",
+            cvc: "123",
+          }
+    );
   }
+
+  const waMessage = useMemo(() => {
+    const lines = items
+      .map((it) => {
+        const p = getProduct(it.slug);
+        if (!p) return "";
+        const color = p.colors.find((c) => c.id === it.colorId) ?? p.colors[0];
+        return `• ${pick(p.name, locale)} — ${pick(color.name, locale)}, ${t.common.size} ${it.size} ×${it.qty} · ${format(p.price * it.qty)}`;
+      })
+      .filter(Boolean)
+      .join("\n");
+    return `${t.checkout.whatsappIntro}\n${lines}\n${t.checkout.summary.total}: ${format(total)}\n${t.checkout.whatsappOutro}`;
+  }, [items, locale, total, t, format]);
 
   function placeOrder(e: React.FormEvent) {
     e.preventDefault();
@@ -107,25 +187,33 @@ export default function CheckoutView() {
   return (
     <div className="page-top">
       <div className="u-container pb-24">
-        <h1 className="pb-3 font-display text-[clamp(2.2rem,5vw,3.4rem)] text-cacao">
+        <h1 className="pb-6 font-display text-[clamp(2.2rem,5vw,3.4rem)] text-cacao">
           {t.checkout.title}
         </h1>
-        <p className="mb-10 flex items-center gap-2 rounded-xl bg-arena/50 px-4 py-2.5 text-sm text-cacao-70">
-          <Info size={16} className="shrink-0 text-arcilla" />
-          {t.checkout.demoNote}
-        </p>
 
         <form onSubmit={placeOrder} className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           {/* Formulario */}
           <div className="flex flex-col gap-12">
+            {/* Helper: pago de ejemplo */}
+            <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--line)] bg-arena/40 p-3 pl-5">
+              <span className="text-sm text-cacao-70">{t.checkout.exampleHint}</span>
+              <button
+                type="button"
+                onClick={fillExample}
+                className="ml-auto inline-flex items-center gap-2 rounded-full bg-cacao px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-lino transition-transform hover:scale-[1.03] active:scale-95"
+              >
+                <Wand2 size={15} /> {t.checkout.exampleFill}
+              </button>
+            </div>
+
             {/* Contacto */}
             <Section num="1" title={t.checkout.contact.title}>
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label={t.checkout.contact.email}>
-                  <input required type="email" inputMode="email" autoComplete="email" className="luxe-input" />
+                  <input required type="email" inputMode="email" autoComplete="email" className="luxe-input" value={form.email} onChange={on("email")} />
                 </Field>
                 <Field label={t.checkout.contact.phone}>
-                  <input type="tel" inputMode="tel" autoComplete="tel" className="luxe-input" />
+                  <input type="tel" inputMode="tel" autoComplete="tel" className="luxe-input" value={form.phone} onChange={on("phone")} />
                 </Field>
               </div>
             </Section>
@@ -134,32 +222,31 @@ export default function CheckoutView() {
             <Section num="2" title={t.checkout.delivery.title}>
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label={t.checkout.delivery.firstName}>
-                  <input required autoComplete="given-name" className="luxe-input" />
+                  <input required autoComplete="given-name" className="luxe-input" value={form.firstName} onChange={on("firstName")} />
                 </Field>
                 <Field label={t.checkout.delivery.lastName}>
-                  <input required autoComplete="family-name" className="luxe-input" />
+                  <input required autoComplete="family-name" className="luxe-input" value={form.lastName} onChange={on("lastName")} />
                 </Field>
                 <Field label={t.checkout.delivery.address} className="sm:col-span-2">
-                  <input required autoComplete="street-address" className="luxe-input" />
+                  <input required autoComplete="street-address" className="luxe-input" value={form.address} onChange={on("address")} />
                 </Field>
                 <Field label={t.checkout.delivery.city}>
-                  <input required autoComplete="address-level2" className="luxe-input" />
+                  <input required autoComplete="address-level2" className="luxe-input" value={form.city} onChange={on("city")} />
                 </Field>
                 <Field label={t.checkout.delivery.state}>
-                  <input autoComplete="address-level1" className="luxe-input" />
+                  <input autoComplete="address-level1" className="luxe-input" value={form.state} onChange={on("state")} />
                 </Field>
                 <Field label={t.checkout.delivery.zip}>
-                  <input required inputMode="numeric" autoComplete="postal-code" className="luxe-input" />
+                  <input required inputMode="numeric" autoComplete="postal-code" className="luxe-input" value={form.zip} onChange={on("zip")} />
                 </Field>
                 <Field label={t.checkout.delivery.country}>
-                  <input required autoComplete="country-name" defaultValue={locale === "pt" ? "Brasil" : "Argentina"} className="luxe-input" />
+                  <input required autoComplete="country-name" className="luxe-input" value={form.country} onChange={on("country")} />
                 </Field>
               </div>
             </Section>
 
             {/* Pago */}
             <Section num="3" title={t.checkout.payment.title}>
-              {/* Wallets */}
               <div className="grid grid-cols-3 gap-3">
                 <WalletBtn className="bg-nocturno text-lino"> Pay</WalletBtn>
                 <WalletBtn className="border border-[var(--line-strong)] bg-white text-cacao">G Pay</WalletBtn>
@@ -172,33 +259,27 @@ export default function CheckoutView() {
                 <span className="h-px flex-1 bg-[var(--line)]" />
               </div>
 
-              {/* Preview de tarjeta */}
-              <CardPreview number={card} name={name} exp={exp} />
+              <CardPreview number={form.card} name={form.cardName} exp={form.exp} />
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
                 <Field label={t.checkout.payment.cardNumber} className="sm:col-span-2">
                   <input
                     inputMode="numeric"
                     placeholder="4242 4242 4242 4242"
-                    value={card}
-                    onChange={(e) => setCard(fmtCard(e.target.value))}
+                    value={form.card}
+                    onChange={(e) => setForm((f) => ({ ...f, card: fmtCard(e.target.value) }))}
                     className="luxe-input tabular"
                   />
                 </Field>
                 <Field label={t.checkout.payment.cardName} className="sm:col-span-2">
-                  <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    autoComplete="cc-name"
-                    className="luxe-input"
-                  />
+                  <input value={form.cardName} onChange={on("cardName")} autoComplete="cc-name" className="luxe-input" />
                 </Field>
                 <Field label={t.checkout.payment.expiry}>
                   <input
                     inputMode="numeric"
                     placeholder="08/28"
-                    value={exp}
-                    onChange={(e) => setExp(fmtExp(e.target.value))}
+                    value={form.exp}
+                    onChange={(e) => setForm((f) => ({ ...f, exp: fmtExp(e.target.value) }))}
                     className="luxe-input tabular"
                   />
                 </Field>
@@ -206,8 +287,8 @@ export default function CheckoutView() {
                   <input
                     inputMode="numeric"
                     placeholder="123"
-                    value={cvc}
-                    onChange={(e) => setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                    value={form.cvc}
+                    onChange={(e) => setForm((f) => ({ ...f, cvc: e.target.value.replace(/\D/g, "").slice(0, 4) }))}
                     className="luxe-input tabular"
                   />
                 </Field>
@@ -260,9 +341,7 @@ export default function CheckoutView() {
                 />
                 <div className="flex items-center justify-between border-t border-[var(--line)] pt-3 text-base">
                   <span className="font-medium text-cacao">{t.checkout.summary.total}</span>
-                  <span className="tabular font-display text-2xl text-cacao">
-                    {format(total)}
-                  </span>
+                  <span className="tabular font-display text-2xl text-cacao">{format(total)}</span>
                 </div>
               </div>
 
@@ -276,6 +355,17 @@ export default function CheckoutView() {
               >
                 {processing ? t.checkout.processing : t.checkout.placeOrder}
               </button>
+
+              {/* Confirmar por WhatsApp */}
+              <a
+                href={whatsappLink(waMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor={t.whatsapp.floatLabel}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-terracota/45 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-arcilla transition-colors hover:bg-terracota hover:text-algodon"
+              >
+                <WhatsappIcon size={16} /> {t.checkout.whatsappOrder}
+              </a>
             </div>
           </aside>
         </form>
@@ -353,9 +443,7 @@ function CardPreview({ number, name, exp }: { number: string; name: string; exp:
       <div className="mt-5 h-8 w-11 rounded-md bg-gradient-to-br from-lino/70 to-lino/30" />
       <p className="tabular mt-4 text-lg tracking-[0.12em] text-lino/95">{shown}</p>
       <div className="mt-3 flex items-end justify-between text-xs">
-        <span className="uppercase tracking-wide text-lino/90">
-          {name || t.checkout.payment.cardName}
-        </span>
+        <span className="uppercase tracking-wide text-lino/90">{name || t.checkout.payment.cardName}</span>
         <span className="tabular text-lino/80">{exp || "MM/AA"}</span>
       </div>
     </div>
